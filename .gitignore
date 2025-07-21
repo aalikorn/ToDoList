@@ -1,0 +1,86 @@
+# Xcode
+*.xcworkspace/xcuserdata/
+*.xcuserdatad/
+*.xcuserstate
+*.xccheckout
+*.moved-aside
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+
+# Derived data & build
+DerivedData/
+build/
+*.ipa
+*.app
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager
+.swiftpm/
+.build/
+Package.resolved
+
+# CocoaPods
+Pods/
+Podfile.lock
+
+# Carthage
+Carthage/
+Carthage/Build/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# Firebase / Crashlytics
+*.xcframework
+firebase_app_id_file.json
+GoogleService-Info.plist
+
+# User-specific
+.DS_Store
+*.swp
+*.swo
+.idea/
+*.iml
+*.log
+
+# Xcode project local backups
+*.xcscmblueprint
+
+# Git merge conflict backups
+*.orig
+
+# CI/CD
+tmp/
+.env
+.env.*
+.envrc
+coverage/
+
+# Symbolication support
+*.symbolicated
+
+# Archive files
+*.zip
+*.tar.gz
+*.tgz
+*.tar
+
+# SwiftLint cache
+.swiftlint.yml
+.swiftlint.cache
+
+# Tuist (если будешь использовать)
+Tuist/Dependencies/SwiftPackageManager/.build/
+
+# VSCode
+.vscode/
+
+# Output folders
+output/
+
