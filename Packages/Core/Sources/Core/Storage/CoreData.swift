@@ -12,12 +12,19 @@ class CoreDataStack {
     @MainActor static let shared = CoreDataStack()
     
     private lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "TasksModel")
+        guard let modelURL = Bundle.module.url(forResource: "TasksModel", withExtension: "momd"),
+              let model = NSManagedObjectModel(contentsOf: modelURL) else {
+            fatalError("❌ Failed to locate Core Data model in Bundle.module")
+        }
+
+        let container = NSPersistentContainer(name: "TasksModel", managedObjectModel: model)
+        
         container.loadPersistentStores { _, error in
             if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
+                fatalError("💥 Core Data store load error: \(error), \(error.userInfo)")
             }
         }
+        
         return container
     }()
     

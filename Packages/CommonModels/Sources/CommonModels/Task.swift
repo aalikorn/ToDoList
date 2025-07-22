@@ -24,9 +24,17 @@ public struct Task {
 }
 
 public struct TaskViewModel: Hashable, Sendable {
-    let title: String
-    let id: Int
-    let todo: String
-    let completed: Bool
-    let date: String
+    public let title: String
+    public let id: Int
+    public let todo: String
+    public let completed: Bool
+    public let date: String
+    
+    public init(title: String, id: Int, todo: String, completed: Bool, date: String) {
+        self.title = title
+        self.id = id
+        self.todo = todo
+        self.completed = completed
+        self.date = date
+    }
 }

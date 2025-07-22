@@ -20,6 +20,7 @@ final class TaskListInteractor {
 extension TaskListInteractor: @preconcurrency TaskListBusinessLogic {
     @MainActor func request(_ request: TaskList.Fetch.Request) {
         tasks = Database.shared.fetchAllTasks()
+        print("tasks from db: ", tasks)
         guard tasks.isEmpty else {
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
@@ -29,13 +30,16 @@ extension TaskListInteractor: @preconcurrency TaskListBusinessLogic {
             }
             return
         }
+        print(tasks)
         let request = TaskRequest()
         APIClient.shared.send(request) { result in
             switch result {
-            case .success(let response):
+            case .success(let initResponse):
+                let response = initResponse.todos
                 let mappedResponse = response.map { item in
                     Task(title: "", id: item.id, todo: item.todo, completed: item.completed, date: Date())
                 }
+                print(mappedResponse)
                 Database.shared.addTasks(mappedResponse)
                 DispatchQueue.main.async { [weak self] in
                     guard let self else { return }
@@ -45,6 +49,7 @@ extension TaskListInteractor: @preconcurrency TaskListBusinessLogic {
                 }
                 
             case .failure(let error):
+                print(error)
                 DispatchQueue.main.async { [weak self] in
                     guard let self else { return }
                     self.presenter.present(TaskList.Fetch.Response(
@@ -60,11 +65,11 @@ extension TaskListInteractor: @preconcurrency TaskListBusinessLogic {
     }
     
     func request(_ request: TaskList.Preview.Request) {
-        presenter.present(TaskList.Preview.Response())
+        presenter.present(TaskList.Preview.Response(id: request.id))
     }
     
     func request(_ request: TaskList.Done.Request) {
-        presenter.present(TaskList.Done.Response())
+        presenter.present(TaskList.Done.Response(id: request.id))
     }
     
     func request(_ request: TaskList.Search.Request) {
@@ -75,6 +80,6 @@ extension TaskListInteractor: @preconcurrency TaskListBusinessLogic {
     }
     
     func request(_ request: TaskList.Edit.Request) {
-        presenter.present(TaskList.Edit.Response())
+        presenter.present(TaskList.Edit.Response(id: request.id))
     }
 }

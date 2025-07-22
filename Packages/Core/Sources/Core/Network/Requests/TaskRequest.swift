@@ -8,12 +8,14 @@
 import Alamofire
 
 public struct TaskRequest: APIRequest {
-    public struct Task: Decodable, Sendable {
-        public let id: Int
-        public let todo: String
-        public let completed: Bool
+    public struct Response: Decodable, Sendable {
+        public let todos: [Task]
+        public struct Task: Decodable, Sendable {
+            public let id: Int
+            public let todo: String
+            public let completed: Bool
+        }
     }
-    public typealias Response = [Task]
     
     public var method: HTTPMethod { .get }
     public var path: String { "todos" }

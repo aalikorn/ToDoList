@@ -32,6 +32,12 @@ final class TaskListViewController: UIViewController {
                 self.interactor?.request(TaskList.Done.Request(id: id))
             }
         }
+        hideKeyboardWhenTappedAround()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        interactor?.request(TaskList.Fetch.Request())
     }
 }
 
@@ -42,7 +48,6 @@ extension TaskListViewController: @preconcurrency TaskListDisplayLogic {
     
     func display(_ viewModel: TaskList.Fetch.ViewModel) {
         guard viewModel.error == nil else {
-            print(viewModel.error)
             return
         }
         rootView.viewModel = viewModel.root
