@@ -13,6 +13,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/Alamofire/Alamofire.git", from: "5.10.2"),
+        .package(path: "../CommonModels"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -20,7 +21,8 @@ let package = Package(
         .target(
             name: "Core",
             dependencies: [
-                .product(name: "Alamofire", package: "Alamofire")
+                .product(name: "Alamofire", package: "Alamofire"),
+                .byName(name: "CommonModels"),
             ]),
         .testTarget(
             name: "CoreTests",

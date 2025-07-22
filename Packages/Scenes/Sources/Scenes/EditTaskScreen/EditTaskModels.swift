@@ -41,6 +41,6 @@ enum EditTask {
     }
     
     struct RootViewModel {
-        var task: Task
+        var task: TaskViewModel
     }
 }

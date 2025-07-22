@@ -17,6 +17,7 @@ let package = Package(
     dependencies: [
         .package(path: "../CommonUI"),
         .package(path: "../CommonModels"),
+        .package(path: "../Core"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -26,6 +27,7 @@ let package = Package(
             dependencies: [
                 .byName(name: "CommonUI"),
                 .byName(name: "CommonModels"),
+                .byName(name: "Core"),
             ]
         ),
         .testTarget(

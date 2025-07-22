@@ -14,25 +14,27 @@ enum TaskList {
         }
         
         struct Response {
-            
+            var model: Model?
+            var error: Error?
         }
         
         struct ViewModel {
-            
+            var root: RootViewModel?
+            var error: String?
         }
     }
     
     enum Preview {
         struct Request {
-            
+            var id: Int
         }
         
         struct Response {
-            
+            var id: Int
         }
         
         struct ViewModel {
-            
+            var id: Int
         }
     }
     
@@ -52,43 +54,43 @@ enum TaskList {
     
     enum Done {
         struct Request {
-            
+            var id: Int
         }
         
         struct Response {
-            
+            var id: Int
         }
         
         struct ViewModel {
-            
+            var id: Int
         }
     }
     
     enum Search {
         struct Request {
-            
+            var query: String
         }
         
         struct Response {
-            
+            var model: Model?
         }
         
         struct ViewModel {
-            
+            var root: RootViewModel?
         }
     }
     
     enum Edit {
         struct Request {
-            
+            var id: Int
         }
         
         struct Response {
-            
+            var id: Int
         }
         
         struct ViewModel {
-            
+            var id: Int
         }
     }
     
@@ -98,7 +100,7 @@ enum TaskList {
     }
     
     struct RootViewModel {
-        let items: [Task]
+        let items: [TaskViewModel]
         let total: Int
     }
 }

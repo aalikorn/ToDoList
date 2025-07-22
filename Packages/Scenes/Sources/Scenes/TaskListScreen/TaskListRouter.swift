@@ -6,5 +6,22 @@
 //
 
 final class TaskListRouter {
+    weak var vc: TaskListViewController?
+    init(vc: TaskListViewController?) {
+        self.vc = vc
+    }
+}
+
+extension TaskListRouter: TaskListRoutingLogic {
+    func preview(taskId: Int) {
+        
+    }
     
+    func add() {
+        
+    }
+    
+    func edit(taskId: Int) {
+        
+    }
 }

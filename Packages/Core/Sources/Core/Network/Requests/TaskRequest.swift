@@ -9,9 +9,9 @@ import Alamofire
 
 public struct TaskRequest: APIRequest {
     public struct Task: Decodable, Sendable {
-        let id: Int
-        let todo: String
-        let completed: Bool
+        public let id: Int
+        public let todo: String
+        public let completed: Bool
     }
     public typealias Response = [Task]
     

@@ -83,6 +83,6 @@ enum TaskPreview {
     }
     
     struct RootViewModel {
-        var task: Task
+        var task: TaskViewModel
     }
 }
