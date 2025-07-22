@@ -20,7 +20,6 @@ final class TaskListInteractor {
 extension TaskListInteractor: @preconcurrency TaskListBusinessLogic {
     @MainActor func request(_ request: TaskList.Fetch.Request) {
         tasks = Database.shared.fetchAllTasks()
-        print("tasks from db: ", tasks)
         guard tasks.isEmpty else {
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
@@ -68,15 +67,29 @@ extension TaskListInteractor: @preconcurrency TaskListBusinessLogic {
         presenter.present(TaskList.Preview.Response(id: request.id))
     }
     
-    func request(_ request: TaskList.Done.Request) {
-        presenter.present(TaskList.Done.Response(id: request.id))
+    @MainActor func request(_ request: TaskList.Done.Request) {
+        let id = request.id
+        guard let taskIndex = tasks.firstIndex(where: { $0.id == id }) else {
+            return
+        }
+        Database.shared.toggleTaskCompletion(id: id)
+        tasks[taskIndex].completed.toggle()
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.presenter.present(TaskList.Done.Response(model: .init(items: tasks, total: tasks.count)))
+        }
     }
     
     func request(_ request: TaskList.Search.Request) {
+        guard !request.query.isEmpty else {
+            presenter.present(TaskList.Search.Response(model: .init(items: tasks, total: tasks.count)))
+            return
+        }
         let filtered = tasks.filter {
             $0.title.localizedCaseInsensitiveContains(request.query) || $0.todo.localizedCaseInsensitiveContains(request.query)
         }
         presenter.present(TaskList.Search.Response(model: .init(items: filtered, total: filtered.count)))
+        
     }
     
     func request(_ request: TaskList.Edit.Request) {

@@ -28,7 +28,7 @@ final class TaskListView: View {
             var snapshot = Snapshot()
             snapshot.appendSections([0])
             snapshot.appendItems(viewModel.items, toSection: 0)
-            dataSource.apply(snapshot, animatingDifferences: true)
+            dataSource.apply(snapshot, animatingDifferences: false)
         }
     }
     
@@ -47,7 +47,6 @@ final class TaskListView: View {
     
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
-        searchBar.placeholder = "Search"
         searchBar.searchBarStyle = .minimal
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         
@@ -61,6 +60,9 @@ final class TaskListView: View {
             string: "Search",
             attributes: [.foregroundColor: UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1)]
         )
+        
+        let imageView = searchBar.searchTextField.leftView as? UIImageView
+        imageView?.tintColor = UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1)
         
         if let textField = searchBar.value(forKey: "searchField") as? UITextField {
             textField.translatesAutoresizingMaskIntoConstraints = false
@@ -100,6 +102,9 @@ final class TaskListView: View {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "TaskCell", for: indexPath) as! TaskCell
                 cell.viewModel = .init(task: item)
                 cell.selectionStyle = .none
+                cell.onToggleDone = { [weak self] in
+                    self?.actionHandler(.done(item.id))
+                }
                 return cell
             default:
                 break
@@ -136,12 +141,15 @@ final class TaskListView: View {
 
     override func setupContent() {
         backgroundColor = .black
+        
         addSubview(titleLabel)
         addSubview(searchBar)
         addSubview(tableView)
         addSubview(footerView)
         footerView.addSubview(countLabel)
         footerView.addSubview(newTaskButton)
+        
+        searchBar.delegate = self
     }
     
     override func setupConstraints() {
@@ -338,5 +346,11 @@ class SearchCellContentView: View {
             dateLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12)
         ])
 
+    }
+}
+
+extension TaskListView: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        actionHandler(.search(searchText))
     }
 }

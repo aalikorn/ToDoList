@@ -58,11 +58,11 @@ enum TaskList {
         }
         
         struct Response {
-            var id: Int
+            var model: Model?
         }
         
         struct ViewModel {
-            var id: Int
+            var root: RootViewModel?
         }
     }
     

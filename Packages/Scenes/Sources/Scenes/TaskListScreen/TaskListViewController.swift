@@ -62,7 +62,7 @@ extension TaskListViewController: @preconcurrency TaskListDisplayLogic {
     }
     
     func display(_ viewModel: TaskList.Done.ViewModel) {
-//        rootView.toggleDone(id: viewModel.id)
+        rootView.viewModel = viewModel.root
     }
     
     func display(_ viewModel: TaskList.Search.ViewModel) {
