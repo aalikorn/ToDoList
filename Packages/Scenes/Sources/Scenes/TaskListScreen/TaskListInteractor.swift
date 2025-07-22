@@ -18,6 +18,19 @@ final class TaskListInteractor {
 }
 
 extension TaskListInteractor: @preconcurrency TaskListBusinessLogic {
+    @MainActor func request(_ request: TaskList.Delete.Request) {
+        let id = request.id
+        guard let taskIndex = tasks.firstIndex(where: { $0.id == id }) else {
+            return
+        }
+        Database.shared.deleteTask(withId: id)
+        tasks.remove(at: taskIndex)
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.presenter.present(TaskList.Delete.Response(model: .init(items: tasks, total: tasks.count)))
+        }
+    }
+    
     @MainActor func request(_ request: TaskList.Fetch.Request) {
         tasks = Database.shared.fetchAllTasks()
         guard tasks.isEmpty else {

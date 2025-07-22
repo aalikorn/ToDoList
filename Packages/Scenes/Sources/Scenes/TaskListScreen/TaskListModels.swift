@@ -94,6 +94,20 @@ enum TaskList {
         }
     }
     
+    enum Delete {
+        struct Request {
+            var id: Int
+        }
+        
+        struct Response {
+            var model: Model?
+        }
+        
+        struct ViewModel {
+            var root: RootViewModel?
+        }
+    }
+    
     struct Model {
         let items: [Task]
         let total: Int

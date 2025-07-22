@@ -12,6 +12,7 @@ protocol TaskListBusinessLogic: AnyObject {
     func request(_ request: TaskList.Done.Request)
     func request(_ request: TaskList.Search.Request)
     func request(_ request: TaskList.Edit.Request)
+    func request(_ request: TaskList.Delete.Request)
 }
 
 protocol TaskListRoutingLogic: AnyObject {
@@ -27,6 +28,7 @@ protocol TaskListPresentingLogic: AnyObject {
     func present(_ response: TaskList.Done.Response)
     func present(_ response: TaskList.Search.Response)
     func present(_ response: TaskList.Edit.Response)
+    func present(_ response: TaskList.Delete.Response)
 }
 
 protocol TaskListDisplayLogic: AnyObject {
@@ -36,4 +38,5 @@ protocol TaskListDisplayLogic: AnyObject {
     func display(_ viewModel: TaskList.Done.ViewModel)
     func display(_ viewModel: TaskList.Search.ViewModel)
     func display(_ viewModel: TaskList.Edit.ViewModel)
+    func display(_ viewModel: TaskList.Delete.ViewModel)
 }

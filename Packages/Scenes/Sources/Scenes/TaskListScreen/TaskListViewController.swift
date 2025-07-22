@@ -30,6 +30,12 @@ final class TaskListViewController: UIViewController {
                 self.interactor?.request(TaskList.Add.Request())
             case .done(let id):
                 self.interactor?.request(TaskList.Done.Request(id: id))
+            case .share(let task):
+                let shareText = "\(task.title): \(task.todo). Создано \(task.date)"
+                let activityVC = UIActivityViewController(activityItems: [shareText], applicationActivities: nil)
+                present(activityVC, animated: true)
+            case .delete(let id):
+                self.interactor?.request(TaskList.Delete.Request(id: id))
             }
         }
         hideKeyboardWhenTappedAround()
@@ -42,6 +48,10 @@ final class TaskListViewController: UIViewController {
 }
 
 extension TaskListViewController: @preconcurrency TaskListDisplayLogic {
+    func display(_ viewModel: TaskList.Delete.ViewModel) {
+        rootView.viewModel = viewModel.root
+    }
+    
     func display(_ viewModel: TaskList.Edit.ViewModel) {
         router?.edit(taskId: viewModel.id)
     }

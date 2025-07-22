@@ -16,6 +16,8 @@ final class TaskListView: View {
         case search(String)
         case new
         case done(Int)
+        case share(TaskViewModel)
+        case delete(Int)
     }
     var actionHandler: (Action) -> Void = { _ in }
     
@@ -185,6 +187,33 @@ extension TaskListView: UITableViewDelegate {
         guard let item = dataSource.itemIdentifier(for: indexPath) else { return }
         actionHandler(.edit(item.id))
     }
+    
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        guard let task = dataSource.itemIdentifier(for: indexPath) else { return nil }
+        return UIContextMenuConfiguration(identifier: NSString(string: "\(task.id)"), previewProvider: {
+            TaskPreviewBuilder.build(id: task.id)
+        }, actionProvider: { _ in
+            let edit = UIAction(title: "Редактировать", image: UIImage(systemName: "square.and.pencil")) { _ in
+                self.actionHandler(.edit(task.id))
+            }
+            let share = UIAction(title: "Поделиться", image: UIImage(systemName: "square.and.arrow.up")) { _ in
+                self.actionHandler(.share(task))
+            }
+            let delete = UIAction(title: "Удалить", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+                self.actionHandler(.delete(task.id))
+            }
+            return UIMenu(title: "", children: [edit, share, delete])
+        })
+    }
+    
+    func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
+        animator.addCompletion {
+            if let idString = configuration.identifier as? NSString,
+               let id = Int(idString as String) {
+                self.actionHandler(.edit(id))
+            }
+        }
+    }
 }
 
 class TaskCell: UITableViewCell {
@@ -265,7 +294,7 @@ class SearchCellContentView: View {
             dateLabel.text = viewModel.task.date
 
             descriptionLabel.textColor = isCompleted ? grayColor : whiteColor
-            dateLabel.textColor = isCompleted ? grayColor : whiteColor
+            dateLabel.textColor = grayColor
 
             let config = UIImage.SymbolConfiguration(pointSize: 24, weight: .regular)
             if isCompleted {
@@ -345,7 +374,6 @@ class SearchCellContentView: View {
             dateLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -12),
             dateLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12)
         ])
-
     }
 }
 

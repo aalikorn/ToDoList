@@ -14,67 +14,11 @@ enum TaskPreview {
         }
         
         struct Response {
-            
+            var model: Model?
         }
         
         struct ViewModel {
-            
-        }
-    }
-    
-    enum Edit {
-        struct Request {
-            
-        }
-        
-        struct Response {
-            
-        }
-        
-        struct ViewModel {
-            
-        }
-    }
-    
-    enum Сlose {
-        struct Request {
-            
-        }
-        
-        struct Response {
-            
-        }
-        
-        struct ViewModel {
-            
-        }
-    }
-    
-    enum Share {
-        struct Request {
-            
-        }
-        
-        struct Response {
-            
-        }
-        
-        struct ViewModel {
-            
-        }
-    }
-    
-    enum Delete {
-        struct Request {
-            
-        }
-        
-        struct Response {
-            
-        }
-        
-        struct ViewModel {
-            
+            var root: RootViewModel?
         }
     }
     
