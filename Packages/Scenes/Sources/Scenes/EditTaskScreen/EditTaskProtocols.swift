@@ -18,11 +18,9 @@ protocol EditTaskRoutingLogic: AnyObject {
 protocol EditTaskPresentingLogic: AnyObject {
     func present(_ response: EditTask.Fetch.Response)
     func present(_ response: EditTask.Back.Response)
-    func present(_ response: EditTask.Save.Response)
 }
 
 protocol EditTasktDisplayLogic: AnyObject {
     func display(_ viewModel: EditTask.Fetch.ViewModel)
     func display(_ viewModel: EditTask.Back.ViewModel)
-    func display(_ viewModel: EditTask.Save.ViewModel)
 }
