@@ -14,6 +14,21 @@ enum EditTask {
         }
         
         struct Response {
+            var model: Model?
+        }
+        
+        struct ViewModel {
+            var RootViewModel: RootViewModel?
+        }
+    }
+    
+    enum Save {
+        struct Request {
+            var title: String
+            var todo: String
+        }
+        
+        struct Response {
             
         }
         
@@ -42,5 +57,10 @@ enum EditTask {
     
     struct RootViewModel {
         var task: TaskViewModel
+    }
+    
+    enum ToDoType {
+        case new
+        case edit
     }
 }

@@ -42,7 +42,6 @@ extension TaskListInteractor: @preconcurrency TaskListBusinessLogic {
             }
             return
         }
-        print(tasks)
         let request = TaskRequest()
         APIClient.shared.send(request) { result in
             switch result {
