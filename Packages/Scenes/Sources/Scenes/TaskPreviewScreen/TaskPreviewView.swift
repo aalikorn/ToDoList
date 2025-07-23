@@ -48,7 +48,7 @@ class TaskPreviewView: View {
     
     override func setupContent() {
         super.setupContent()
-        backgroundColor = UIColor(red: 39/255, green: 39/255, blue: 41/255, alpha: 1)
+        backgroundColor = .mainGrayColor
         addSubview(titleLabel)
         addSubview(descriptionLabel)
         addSubview(dateLabel)

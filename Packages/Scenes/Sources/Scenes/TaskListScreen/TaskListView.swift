@@ -26,7 +26,7 @@ final class TaskListView: View {
                     
             countLabel.text = "\(viewModel.total) задач"
 
-            var snapshot = Snapshot()
+            snapshot = Snapshot()
             snapshot.appendSections([0])
             snapshot.appendItems(viewModel.items, toSection: 0)
             dataSource.apply(snapshot, animatingDifferences: false)
@@ -35,6 +35,10 @@ final class TaskListView: View {
     
     private typealias DataSource = UITableViewDiffableDataSource<Int, TaskViewModel>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Int, TaskViewModel>
+    
+    private lazy var snapshot = Snapshot()
+    
+    // MARK: - UI
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -54,16 +58,16 @@ final class TaskListView: View {
         searchBar.backgroundImage = UIImage()
 
         let textField = searchBar.searchTextField
-        textField.backgroundColor = UIColor(red: 39/255, green: 39/255, blue: 41/255, alpha: 1)
+        textField.backgroundColor = .mainGrayColor
         textField.textColor = .white
 
         textField.attributedPlaceholder = NSAttributedString(
             string: "Search",
-            attributes: [.foregroundColor: UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1)]
+            attributes: [.foregroundColor: UIColor.lightGrayColor]
         )
         
         let imageView = searchBar.searchTextField.leftView as? UIImageView
-        imageView?.tintColor = UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1)
+        imageView?.tintColor = .lightGrayColor
         
         if let textField = searchBar.value(forKey: "searchField") as? UITextField {
             textField.translatesAutoresizingMaskIntoConstraints = false
@@ -78,9 +82,8 @@ final class TaskListView: View {
         return searchBar
     }()
 
-    
     private lazy var tableView: UITableView = {
-        let view = UITableView(frame: .zero, style: .grouped)
+        let view = UITableView(frame: .zero, style: .plain)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.register(TaskCell.self, forCellReuseIdentifier: "TaskCell")
         view.separatorStyle = .singleLine
@@ -117,7 +120,7 @@ final class TaskListView: View {
     
     private let footerView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 39/255, green: 39/255, blue: 41/255, alpha: 1)
+        view.backgroundColor = .mainGrayColor
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -141,6 +144,8 @@ final class TaskListView: View {
         return button
     }()
 
+    // MARK: - Setup
+    
     override func setupContent() {
         backgroundColor = .black
         
@@ -181,8 +186,15 @@ final class TaskListView: View {
         ])
     }
     
+    // MARK: - Actions
     @objc func newTaskButtonTapped() {
         actionHandler(.new)
+    }
+    
+    func deleteItem(_ task: TaskViewModel, total: Int) {
+        snapshot.deleteItems([task])
+        dataSource.apply(snapshot, animatingDifferences: true)
+        countLabel.text = "\(total) задач"
     }
 }
 

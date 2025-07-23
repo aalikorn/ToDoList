@@ -49,7 +49,10 @@ final class EditTaskView: View, UITextViewDelegate {
         textField.font = .size34Bold
         textField.textColor = .white
         textField.backgroundColor = .clear
-        textField.placeholder = "Заголовок"
+        textField.attributedPlaceholder = NSAttributedString(
+            string: "Название задачи",
+            attributes: [.foregroundColor: UIColor.systemGray2]
+        )
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()

@@ -47,7 +47,7 @@ final class TaskListViewController: UIViewController {
 
 extension TaskListViewController: @preconcurrency TaskListDisplayLogic {
     func display(_ viewModel: TaskList.Delete.ViewModel) {
-        rootView.viewModel = viewModel.root
+        rootView.deleteItem(viewModel.task, total: viewModel.total)
     }
     
     func display(_ viewModel: TaskList.Edit.ViewModel) {

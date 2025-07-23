@@ -100,11 +100,13 @@ enum TaskList {
         }
         
         struct Response {
-            var model: Model?
+            var model: Task?
+            var total: Int
         }
         
         struct ViewModel {
-            var root: RootViewModel?
+            var task: TaskViewModel
+            var total: Int
         }
     }
     

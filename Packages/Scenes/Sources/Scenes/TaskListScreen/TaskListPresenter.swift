@@ -17,9 +17,8 @@ final class TaskListPresenter {
 
 extension TaskListPresenter: TaskListPresentingLogic {
     func present(_ response: TaskList.Delete.Response) {
-        if let model = response.model {
-            let sortedItems = model.items.sorted { $0.date > $1.date }
-            let viewModels = sortedItems.map { task in
+        if let task = response.model {
+            let viewModel =
                 TaskViewModel(
                     title: task.title.isEmpty ? task.todo : task.title,
                     id: task.id,
@@ -27,11 +26,10 @@ extension TaskListPresenter: TaskListPresentingLogic {
                     completed: task.completed,
                     date: formattedDate(task.date)
                 )
-            }
-            let root = TaskList.RootViewModel(items: viewModels, total: model.total)
-            view?.display(TaskList.Fetch.ViewModel(root: root, error: nil))
+            view?.display(TaskList.Delete.ViewModel(task: viewModel, total: response.total))
         }
     }
+    
     
     func present(_ response: TaskList.Edit.Response) {
         view?.display(TaskList.Edit.ViewModel(id: response.id))

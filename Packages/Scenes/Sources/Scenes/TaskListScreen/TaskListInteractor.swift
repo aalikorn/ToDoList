@@ -24,10 +24,11 @@ extension TaskListInteractor: @preconcurrency TaskListBusinessLogic {
             return
         }
         Database.shared.deleteTask(withId: id)
+        let task = tasks[taskIndex]
         tasks.remove(at: taskIndex)
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
-            self.presenter.present(TaskList.Delete.Response(model: .init(items: tasks, total: tasks.count)))
+            self.presenter.present(TaskList.Delete.Response(model: task, total: tasks.count))
         }
     }
     
@@ -43,24 +44,23 @@ extension TaskListInteractor: @preconcurrency TaskListBusinessLogic {
             return
         }
         let request = TaskRequest()
-        APIClient.shared.send(request) { result in
+        APIClient.shared.send(request) {[weak self] result in
+            guard let self else { return }
             switch result {
             case .success(let initResponse):
                 let response = initResponse.todos
                 let mappedResponse = response.map { item in
                     Task(title: "", id: item.id, todo: item.todo, completed: item.completed, date: Date())
                 }
-                print(mappedResponse)
+                self.tasks = mappedResponse
                 Database.shared.addTasks(mappedResponse)
-                DispatchQueue.main.async { [weak self] in
-                    guard let self else { return }
+                DispatchQueue.main.async {
                     self.presenter.present(TaskList.Fetch.Response(
                         model: .init(items: mappedResponse, total: mappedResponse.count)
                     ))
                 }
                 
             case .failure(let error):
-                print(error)
                 DispatchQueue.main.async { [weak self] in
                     guard let self else { return }
                     self.presenter.present(TaskList.Fetch.Response(
