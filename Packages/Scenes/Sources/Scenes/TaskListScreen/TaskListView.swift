@@ -131,12 +131,13 @@ final class TaskListView: View {
         return label
     }()
     
-    private let newTaskButton: UIButton = {
+    private lazy var newTaskButton: UIButton = {
         let button = UIButton(type: .system)
         let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)
         button.setImage(UIImage(systemName: "square.and.pencil", withConfiguration: config), for: .normal)
         button.tintColor = .mainYellowColor
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(newTaskButtonTapped), for: .touchUpInside)
         return button
     }()
 
@@ -178,6 +179,10 @@ final class TaskListView: View {
             newTaskButton.centerYAnchor.constraint(equalTo: countLabel.centerYAnchor),
             newTaskButton.rightAnchor.constraint(equalTo: footerView.rightAnchor, constant: -25),
         ])
+    }
+    
+    @objc func newTaskButtonTapped() {
+        actionHandler(.new)
     }
 }
 

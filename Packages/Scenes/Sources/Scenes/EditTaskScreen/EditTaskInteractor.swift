@@ -39,6 +39,7 @@ extension EditTaskInteractor: @preconcurrency EditTaskBusinessLogic {
             let allTasks = Database.shared.fetchAllTasks()
             let newIndex = (allTasks.map { $0.id }.max() ?? 0) + 1
             let newTask = Task(title: title, id: newIndex, todo: todo, completed: false, date: self.date ?? Date())
+            id = newIndex
             Database.shared.addTask(newTask)
         }
     }

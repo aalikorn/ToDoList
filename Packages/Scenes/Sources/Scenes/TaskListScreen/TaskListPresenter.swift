@@ -18,7 +18,7 @@ final class TaskListPresenter {
 extension TaskListPresenter: TaskListPresentingLogic {
     func present(_ response: TaskList.Delete.Response) {
         if let model = response.model {
-            let sortedItems = model.items.sorted { $0.date < $1.date }
+            let sortedItems = model.items.sorted { $0.date > $1.date }
             let viewModels = sortedItems.map { task in
                 TaskViewModel(
                     title: task.title.isEmpty ? task.todo : task.title,
@@ -39,7 +39,7 @@ extension TaskListPresenter: TaskListPresentingLogic {
     
     func present(_ response: TaskList.Fetch.Response) {
         if let model = response.model {
-            let sortedItems = model.items.sorted { $0.date < $1.date }
+            let sortedItems = model.items.sorted { $0.date > $1.date }
             let viewModels = sortedItems.map { task in
                 TaskViewModel(
                     title: task.title.isEmpty ? task.todo : task.title,
@@ -62,7 +62,7 @@ extension TaskListPresenter: TaskListPresentingLogic {
     
     func present(_ response: TaskList.Done.Response) {
         if let model = response.model {
-            let sortedItems = model.items.sorted { $0.date < $1.date }
+            let sortedItems = model.items.sorted { $0.date > $1.date }
             let viewModels = sortedItems.map { task in
                 TaskViewModel(
                     title: task.title.isEmpty ? task.todo : task.title,
@@ -79,7 +79,7 @@ extension TaskListPresenter: TaskListPresentingLogic {
     
     func present(_ response: TaskList.Search.Response) {
         if let model = response.model {
-            let sortedItems = model.items.sorted { $0.date < $1.date }
+            let sortedItems = model.items.sorted { $0.date > $1.date }
             let viewModels = sortedItems.map { task in
                 TaskViewModel(
                     title: task.title.isEmpty ? task.todo : task.title,
