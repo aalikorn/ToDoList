@@ -11,7 +11,6 @@ import CommonModels
 
 final class TaskListView: View {
     enum Action {
-        case preview(Int)
         case edit(Int)
         case search(String)
         case new

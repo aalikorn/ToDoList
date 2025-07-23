@@ -75,10 +75,6 @@ extension TaskListInteractor: @preconcurrency TaskListBusinessLogic {
         presenter.present(TaskList.Add.Response())
     }
     
-    func request(_ request: TaskList.Preview.Request) {
-        presenter.present(TaskList.Preview.Response(id: request.id))
-    }
-    
     @MainActor func request(_ request: TaskList.Done.Request) {
         let id = request.id
         guard let taskIndex = tasks.firstIndex(where: { $0.id == id }) else {

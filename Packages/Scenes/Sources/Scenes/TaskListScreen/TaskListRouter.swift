@@ -12,16 +12,12 @@ final class TaskListRouter {
     }
 }
 
-extension TaskListRouter: TaskListRoutingLogic {
-    func preview(taskId: Int) {
-        
+extension TaskListRouter: @preconcurrency TaskListRoutingLogic {
+    @MainActor func add() {
+        vc?.navigationController?.pushViewController(EditTaskBuilder.build(), animated: true)
     }
     
-    func add() {
-        
-    }
-    
-    func edit(taskId: Int) {
-        
+    @MainActor func edit(taskId: Int) {
+        vc?.navigationController?.pushViewController(EditTaskBuilder.build(id: taskId), animated: true)
     }
 }

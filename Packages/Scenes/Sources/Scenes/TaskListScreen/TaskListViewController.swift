@@ -20,8 +20,6 @@ final class TaskListViewController: UIViewController {
         rootView.actionHandler = { [weak self] action in
             guard let self else { return }
             switch action {
-            case .preview(let id):
-                self.interactor?.request(TaskList.Preview.Request(id: id))
             case .edit(let id):
                 self.interactor?.request(TaskList.Edit.Request(id: id))
             case .search(let query):
@@ -65,10 +63,6 @@ extension TaskListViewController: @preconcurrency TaskListDisplayLogic {
     
     func display(_ viewModel: TaskList.Add.ViewModel) {
         router?.add()
-    }
-    
-    func display(_ viewModel: TaskList.Preview.ViewModel) {
-        router?.preview(taskId: viewModel.id)
     }
     
     func display(_ viewModel: TaskList.Done.ViewModel) {

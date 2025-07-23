@@ -57,11 +57,7 @@ extension TaskListPresenter: TaskListPresentingLogic {
     }
     
     func present(_ response: TaskList.Add.Response) {
-        
-    }
-    
-    func present(_ response: TaskList.Preview.Response) {
-        
+        view?.display(TaskList.Add.ViewModel())
     }
     
     func present(_ response: TaskList.Done.Response) {
