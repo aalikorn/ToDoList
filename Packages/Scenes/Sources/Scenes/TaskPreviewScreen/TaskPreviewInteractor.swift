@@ -21,9 +21,6 @@ final class TaskPreviewInteractor {
 extension TaskPreviewInteractor: @preconcurrency TaskPreviewBusinessLogic {
     @MainActor func request(_ request: TaskPreview.Fetch.Request) {
         guard let task = Database.shared.fetchTask(byId: id) else { return }
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            self.presenter.present(TaskPreview.Fetch.Response(model: .init(task: task)))
-        }
+        presenter.present(TaskPreview.Fetch.Response(model: .init(task: task)))
     }
 }

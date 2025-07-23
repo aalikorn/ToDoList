@@ -14,14 +14,14 @@ class CoreDataStack {
     private lazy var persistentContainer: NSPersistentContainer = {
         guard let modelURL = Bundle.module.url(forResource: "TasksModel", withExtension: "momd"),
               let model = NSManagedObjectModel(contentsOf: modelURL) else {
-            fatalError("❌ Failed to locate Core Data model in Bundle.module")
+            fatalError("Failed to locate Core Data model in Bundle.module")
         }
 
         let container = NSPersistentContainer(name: "TasksModel", managedObjectModel: model)
         
         container.loadPersistentStores { _, error in
             if let error = error as NSError? {
-                fatalError("💥 Core Data store load error: \(error), \(error.userInfo)")
+                fatalError("Core Data store load error: \(error), \(error.userInfo)")
             }
         }
         
@@ -32,6 +32,12 @@ class CoreDataStack {
         persistentContainer.viewContext
     }
     
+    var backgroundContext: NSManagedObjectContext {
+        let context = persistentContainer.newBackgroundContext()
+        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+        return context
+    }
+
     func saveContext() {
         if context.hasChanges {
             do {

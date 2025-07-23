@@ -26,21 +26,15 @@ extension TaskListInteractor: @preconcurrency TaskListBusinessLogic {
         Database.shared.deleteTask(withId: id)
         let task = tasks[taskIndex]
         tasks.remove(at: taskIndex)
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            self.presenter.present(TaskList.Delete.Response(model: task, total: tasks.count))
-        }
+        presenter.present(TaskList.Delete.Response(model: task, total: tasks.count))
     }
     
     @MainActor func request(_ request: TaskList.Fetch.Request) {
         tasks = Database.shared.fetchAllTasks()
         guard tasks.isEmpty else {
-            DispatchQueue.main.async { [weak self] in
-                guard let self else { return }
-                self.presenter.present(TaskList.Fetch.Response(
-                    model: .init(items: self.tasks, total: self.tasks.count)
-                ))
-            }
+            presenter.present(TaskList.Fetch.Response(
+                model: .init(items: self.tasks, total: self.tasks.count)
+            ))
             return
         }
         let request = TaskRequest()
@@ -54,11 +48,9 @@ extension TaskListInteractor: @preconcurrency TaskListBusinessLogic {
                 }
                 self.tasks = mappedResponse
                 Database.shared.addTasks(mappedResponse)
-                DispatchQueue.main.async {
-                    self.presenter.present(TaskList.Fetch.Response(
-                        model: .init(items: mappedResponse, total: mappedResponse.count)
-                    ))
-                }
+                presenter.present(TaskList.Fetch.Response(
+                    model: .init(items: mappedResponse, total: mappedResponse.count)
+                ))
                 
             case .failure(let error):
                 DispatchQueue.main.async { [weak self] in
@@ -82,10 +74,7 @@ extension TaskListInteractor: @preconcurrency TaskListBusinessLogic {
         }
         Database.shared.toggleTaskCompletion(id: id)
         tasks[taskIndex].completed.toggle()
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            self.presenter.present(TaskList.Done.Response(model: .init(items: tasks, total: tasks.count)))
-        }
+        presenter.present(TaskList.Done.Response(model: .init(items: tasks, total: tasks.count)))
     }
     
     func request(_ request: TaskList.Search.Request) {

@@ -48,19 +48,13 @@ extension EditTaskInteractor: @preconcurrency EditTaskBusinessLogic {
         if let id {
             guard let task = Database.shared.fetchTask(byId: id) else { return }
             self.date = task.date
-            DispatchQueue.main.async { [weak self] in
-                self?.presenter.present(EditTask.Fetch.Response(model: EditTask.Model(task: task)))
-            }
+            presenter.present(EditTask.Fetch.Response(model: EditTask.Model(task: task)))
         } else {
-            DispatchQueue.main.async { [weak self] in
-                self?.presenter.present(EditTask.Fetch.Response())
-            }
+            presenter.present(EditTask.Fetch.Response())
         }
     }
     
     @MainActor func request(_ request: EditTask.Back.Request) {
-        DispatchQueue.main.async { [weak self] in
-            self?.presenter.present(EditTask.Back.Response())
-        }
+        presenter.present(EditTask.Back.Response())
     }
 }
