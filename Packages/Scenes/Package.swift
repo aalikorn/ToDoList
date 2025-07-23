@@ -32,7 +32,8 @@ let package = Package(
         ),
         .testTarget(
             name: "ScenesTests",
-            dependencies: ["Scenes"]
-        ),
+            dependencies: ["Scenes", "CommonModels", "Core"],
+            path: "Tests/ScenesTests"
+        )
     ]
 )

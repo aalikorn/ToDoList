@@ -10,15 +10,15 @@ import CoreData
 import CommonModels
 
 @MainActor
-public class Database {
+open class Database {
     private let coreData = CoreDataStack.shared
-    public static let shared = Database()
+    public static var shared = Database()
     private init() { }
     
     // MARK: - CRUD Operations
     
     // Create
-    public func addTask(_ task: Task) {
+    open func addTask(_ task: Task) {
         let entity = TaskEntity(context: coreData.context)
         entity.id = Int64(task.id)
         entity.title = task.title
@@ -29,7 +29,7 @@ public class Database {
     }
     
     // Batch save multiple tasks
-    public func addTasks(_ tasks: [Task]) {
+    open func addTasks(_ tasks: [Task]) {
         tasks.forEach { task in
             let entity = TaskEntity(context: coreData.context)
             entity.id = Int64(task.id)
@@ -43,7 +43,7 @@ public class Database {
     }
     
     // Read (all)
-    public func fetchAllTasks() -> [Task] {
+    open func fetchAllTasks() -> [Task] {
         let request: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
         do {
             let result = try coreData.context.fetch(request)
@@ -61,7 +61,7 @@ public class Database {
     }
     
     // Get single task by ID
-    public func fetchTask(byId id: Int) -> Task? {
+    open func fetchTask(byId id: Int) -> Task? {
         let request: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
         request.predicate = NSPredicate(format: "id == %d", id)
         request.fetchLimit = 1
@@ -88,7 +88,7 @@ public class Database {
     }
     
     // Update
-    public func updateTask(_ task: Task) {
+    open func updateTask(_ task: Task) {
         let request: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
         request.predicate = NSPredicate(format: "id == %d", task.id)
         
@@ -106,7 +106,7 @@ public class Database {
     }
     
     // Delete
-    public func deleteTask(withId id: Int) {
+    open func deleteTask(withId id: Int) {
         let request: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
         request.predicate = NSPredicate(format: "id == %d", id)
         
@@ -121,7 +121,7 @@ public class Database {
     }
     
     // Toggle completion status
-    public func toggleTaskCompletion(id: Int) {
+    open func toggleTaskCompletion(id: Int) {
         let request: NSFetchRequest<TaskEntity> = TaskEntity.fetchRequest()
         request.predicate = NSPredicate(format: "id == %d", id)
         

@@ -14,6 +14,11 @@ public struct TaskRequest: APIRequest {
             public let id: Int
             public let todo: String
             public let completed: Bool
+            public init(id: Int, todo: String, completed: Bool) {
+                self.id = id
+                self.todo = todo
+                self.completed = completed
+            }
         }
     }
     

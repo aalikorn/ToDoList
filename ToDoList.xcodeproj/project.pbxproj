@@ -46,6 +46,16 @@
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		BC71E8882E312EFB00E7F27F /* Exceptions for "Packages" folder in "Compile Sources" phase from "ToDoListTests" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = BC81A8082E2EED2200121D8A /* Sources */;
+			membershipExceptions = (
+				Scenes,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		BC81A7F52E2EED2000121D8A /* ToDoList */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -55,18 +65,11 @@
 			path = ToDoList;
 			sourceTree = "<group>";
 		};
-		BC81A80F2E2EED2200121D8A /* ToDoListTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ToDoListTests;
-			sourceTree = "<group>";
-		};
-		BC81A8192E2EED2200121D8A /* ToDoListUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ToDoListUITests;
-			sourceTree = "<group>";
-		};
 		BC81A84E2E2EF0AF00121D8A /* Packages */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				BC71E8882E312EFB00E7F27F /* Exceptions for "Packages" folder in "Compile Sources" phase from "ToDoListTests" target */,
+			);
 			path = Packages;
 			sourceTree = "<group>";
 		};
@@ -113,8 +116,6 @@
 			children = (
 				BC81A84E2E2EF0AF00121D8A /* Packages */,
 				BC81A7F52E2EED2000121D8A /* ToDoList */,
-				BC81A80F2E2EED2200121D8A /* ToDoListTests */,
-				BC81A8192E2EED2200121D8A /* ToDoListUITests */,
 				BC3A85A52E2EF3EA000D5DAA /* Frameworks */,
 				BC81A7F42E2EED2000121D8A /* Products */,
 			);
@@ -173,9 +174,6 @@
 			dependencies = (
 				BC81A80E2E2EED2200121D8A /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				BC81A80F2E2EED2200121D8A /* ToDoListTests */,
-			);
 			name = ToDoListTests;
 			packageProductDependencies = (
 			);
@@ -195,9 +193,6 @@
 			);
 			dependencies = (
 				BC81A8182E2EED2200121D8A /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				BC81A8192E2EED2200121D8A /* ToDoListUITests */,
 			);
 			name = ToDoListUITests;
 			packageProductDependencies = (

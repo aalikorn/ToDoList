@@ -9,8 +9,8 @@ import Alamofire
 import Combine
 import Foundation
 
-public final class APIClient: @unchecked Sendable {
-    public static let shared = APIClient()
+open class APIClient: @unchecked Sendable {
+    @MainActor public static var shared = APIClient()
     private let session: Session
     private let responseQueue: DispatchQueue
     
@@ -20,7 +20,7 @@ public final class APIClient: @unchecked Sendable {
         self.responseQueue = responseQueue
     }
     
-    public func send<T: APIRequest>(
+    open func send<T: APIRequest>(
         _ request: T,
         completion: @escaping (Result<T.Response, Error>) -> Void
     ) {
