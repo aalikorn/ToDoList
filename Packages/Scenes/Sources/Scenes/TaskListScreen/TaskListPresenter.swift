@@ -37,20 +37,10 @@ extension TaskListPresenter: TaskListPresentingLogic {
     
     func present(_ response: TaskList.Fetch.Response) {
         if let model = response.model {
-            let sortedItems = model.items.sorted { $0.date > $1.date }
-            let viewModels = sortedItems.map { task in
-                TaskViewModel(
-                    title: task.title.isEmpty ? task.todo : task.title,
-                    id: task.id,
-                    todo: task.todo,
-                    completed: task.completed,
-                    date: formattedDate(task.date)
-                )
-            }
-            let root = TaskList.RootViewModel(items: viewModels, total: model.total)
+            let root = presentAllTasks(model: model)
             view?.display(TaskList.Fetch.ViewModel(root: root, error: nil))
         } else if let error = response.error {
-            view?.display(TaskList.Fetch.ViewModel(root: nil, error: error.localizedDescription))
+            view?.display(TaskList.Fetch.ViewModel(root: nil, error: error.appErrorLocalizedDescription()))
         }
     }
     
@@ -60,35 +50,15 @@ extension TaskListPresenter: TaskListPresentingLogic {
     
     func present(_ response: TaskList.Done.Response) {
         if let model = response.model {
-            let sortedItems = model.items.sorted { $0.date > $1.date }
-            let viewModels = sortedItems.map { task in
-                TaskViewModel(
-                    title: task.title.isEmpty ? task.todo : task.title,
-                    id: task.id,
-                    todo: task.todo,
-                    completed: task.completed,
-                    date: formattedDate(task.date)
-                )
-            }
-            let root = TaskList.RootViewModel(items: viewModels, total: model.total)
-            view?.display(TaskList.Fetch.ViewModel(root: root, error: nil))
+            let root = presentAllTasks(model: model)
+            view?.display(TaskList.Done.ViewModel(root: root))
         }
     }
     
     func present(_ response: TaskList.Search.Response) {
         if let model = response.model {
-            let sortedItems = model.items.sorted { $0.date > $1.date }
-            let viewModels = sortedItems.map { task in
-                TaskViewModel(
-                    title: task.title.isEmpty ? task.todo : task.title,
-                    id: task.id,
-                    todo: task.todo,
-                    completed: task.completed,
-                    date: formattedDate(task.date)
-                )
-            }
-            let root = TaskList.RootViewModel(items: viewModels, total: model.total)
-            view?.display(TaskList.Fetch.ViewModel(root: root, error: nil))
+            let root = presentAllTasks(model: model)
+            view?.display(TaskList.Search.ViewModel(root: root))
         }
     }
     
@@ -97,5 +67,20 @@ extension TaskListPresenter: TaskListPresentingLogic {
         formatter.dateFormat = "dd/MM/yy"
         formatter.locale = Locale(identifier: "en_US_POSIX")
         return formatter.string(from: date)
+    }
+    
+    private func presentAllTasks(model: TaskList.Model) -> TaskList.RootViewModel {
+        let sortedItems = model.items.sorted { $0.date > $1.date }
+        let viewModels = sortedItems.map { task in
+            TaskViewModel(
+                title: task.title.isEmpty ? task.todo : task.title,
+                id: task.id,
+                todo: task.todo.isEmpty ? task.title : task.todo,
+                completed: task.completed,
+                date: formattedDate(task.date)
+            )
+        }
+        let root = TaskList.RootViewModel(items: viewModels, total: model.total)
+        return root
     }
 }

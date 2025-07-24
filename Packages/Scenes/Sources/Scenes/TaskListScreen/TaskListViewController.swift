@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CommonModels
 
 final class TaskListViewController: UIViewController {
     var interactor: TaskListBusinessLogic?
@@ -48,6 +49,9 @@ final class TaskListViewController: UIViewController {
 extension TaskListViewController: @preconcurrency TaskListDisplayLogic {
     func display(_ viewModel: TaskList.Delete.ViewModel) {
         rootView.deleteItem(viewModel.task, total: viewModel.total)
+        if viewModel.total == 0 {
+            rootView.showError(AppError.noTasksFound.appErrorLocalizedDescription())
+        }
     }
     
     func display(_ viewModel: TaskList.Edit.ViewModel) {
@@ -55,10 +59,11 @@ extension TaskListViewController: @preconcurrency TaskListDisplayLogic {
     }
     
     func display(_ viewModel: TaskList.Fetch.ViewModel) {
-        guard viewModel.error == nil else {
+        guard let error = viewModel.error else {
+            rootView.viewModel = viewModel.root
             return
         }
-        rootView.viewModel = viewModel.root
+        rootView.showError(error)
     }
     
     func display(_ viewModel: TaskList.Add.ViewModel) {

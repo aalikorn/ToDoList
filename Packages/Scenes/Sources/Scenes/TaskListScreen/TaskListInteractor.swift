@@ -37,6 +37,13 @@ extension TaskListInteractor: @preconcurrency TaskListBusinessLogic {
             ))
             return
         }
+        guard !UserDefaultsService.isNotFirstLaunch else {
+            presenter.present(TaskList.Fetch.Response(
+                error: .noTasksFound
+            ))
+            return
+        }
+        UserDefaultsService.isNotFirstLaunch = true
         let request = TaskRequest()
         APIClient.shared.send(request) {[weak self] result in
             guard let self else { return }
@@ -55,8 +62,9 @@ extension TaskListInteractor: @preconcurrency TaskListBusinessLogic {
             case .failure(let error):
                 DispatchQueue.main.async { [weak self] in
                     guard let self else { return }
+                    print("🚨 error fetching tasks from network: \(error)")
                     self.presenter.present(TaskList.Fetch.Response(
-                        error: error
+                        error: .unknown
                     ))
                 }
             }

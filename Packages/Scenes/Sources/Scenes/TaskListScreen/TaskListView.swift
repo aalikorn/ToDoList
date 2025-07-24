@@ -23,6 +23,11 @@ final class TaskListView: View {
     var viewModel: TaskList.RootViewModel? {
         didSet {
             guard let viewModel = viewModel else { return }
+            
+            searchBar.isHidden = false
+            tableView.isHidden = false
+            countLabel.isHidden = false
+            errorLabel.isHidden = true
                     
             countLabel.text = "\(viewModel.total) задач"
 
@@ -143,6 +148,17 @@ final class TaskListView: View {
         button.addTarget(self, action: #selector(newTaskButtonTapped), for: .touchUpInside)
         return button
     }()
+    
+    private let errorLabel: UILabel = {
+        let label = UILabel()
+        label.font = .size16Medium
+        label.textColor = .white
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
 
     // MARK: - Setup
     
@@ -155,6 +171,7 @@ final class TaskListView: View {
         addSubview(footerView)
         footerView.addSubview(countLabel)
         footerView.addSubview(newTaskButton)
+        addSubview(errorLabel)
         
         searchBar.delegate = self
     }
@@ -183,6 +200,11 @@ final class TaskListView: View {
             
             newTaskButton.centerYAnchor.constraint(equalTo: countLabel.centerYAnchor),
             newTaskButton.rightAnchor.constraint(equalTo: footerView.rightAnchor, constant: -25),
+            
+            errorLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            errorLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            errorLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 20),
+            errorLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -20)
         ])
     }
     
@@ -195,6 +217,14 @@ final class TaskListView: View {
         snapshot.deleteItems([task])
         dataSource.apply(snapshot, animatingDifferences: true)
         countLabel.text = "\(total) задач"
+    }
+    
+    func showError(_ message: String) {
+        searchBar.isHidden = true
+        tableView.isHidden = true
+        countLabel.isHidden = true
+        errorLabel.isHidden = false
+        errorLabel.text = message
     }
 }
 
@@ -229,6 +259,20 @@ extension TaskListView: UITableViewDelegate {
                 self.actionHandler(.edit(id))
             }
         }
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard let task = dataSource.itemIdentifier(for: indexPath) else { return nil }
+
+        let deleteAction = UIContextualAction(style: .destructive, title: "Удалить") { [weak self] _, _, completion in
+            self?.actionHandler(.delete(task.id))
+            completion(true)
+        }
+
+        deleteAction.backgroundColor = .systemRed
+        deleteAction.image = UIImage(systemName: "trash")
+
+        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 }
 
@@ -312,7 +356,7 @@ class SearchCellContentView: View {
             descriptionLabel.textColor = isCompleted ? grayColor : whiteColor
             dateLabel.textColor = grayColor
 
-            let config = UIImage.SymbolConfiguration(pointSize: 24, weight: .regular)
+            let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .regular)
             if isCompleted {
                 doneButton.setImage(UIImage(systemName: "checkmark.circle", withConfiguration: config), for: .normal)
                 doneButton.tintColor = .mainYellowColor
@@ -374,8 +418,8 @@ class SearchCellContentView: View {
         NSLayoutConstraint.activate([
             doneButton.topAnchor.constraint(equalTo: topAnchor, constant: 12),
             doneButton.leftAnchor.constraint(equalTo: leftAnchor, constant: 20),
-            doneButton.widthAnchor.constraint(equalToConstant: 24),
-            doneButton.heightAnchor.constraint(equalToConstant: 24),
+            doneButton.widthAnchor.constraint(equalToConstant: 30),
+            doneButton.heightAnchor.constraint(equalToConstant: 30),
             
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 12),
             titleLabel.leftAnchor.constraint(equalTo: doneButton.rightAnchor, constant: 8),

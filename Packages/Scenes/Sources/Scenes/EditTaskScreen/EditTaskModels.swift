@@ -9,9 +9,7 @@ import CommonModels
 
 enum EditTask {
     enum Fetch {
-        struct Request {
-            
-        }
+        struct Request { }
         
         struct Response {
             var model: Model?

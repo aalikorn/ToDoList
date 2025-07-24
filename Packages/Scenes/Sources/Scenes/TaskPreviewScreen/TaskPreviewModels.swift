@@ -9,9 +9,7 @@ import CommonModels
 
 enum TaskPreview {
     enum Fetch {
-        struct Request {
-            
-        }
+        struct Request { }
         
         struct Response {
             var model: Model?

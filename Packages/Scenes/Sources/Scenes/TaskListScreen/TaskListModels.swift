@@ -15,7 +15,7 @@ enum TaskList {
         
         struct Response {
             var model: Model?
-            var error: Error?
+            var error: AppError?
         }
         
         struct ViewModel {
